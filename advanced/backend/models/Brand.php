@@ -16,6 +16,16 @@ use Yii;
  */
 class Brand extends \yii\db\ActiveRecord
 {
+    public $imgFile;
+
+    public static function getStatusOption($hidden=true){
+        $option = [ -1=>'删除',0=>'隐藏',1=>'正常'];
+        if($hidden){
+            unset($option['-1']);
+        }
+        return $option;
+    }
+
     /**
      * @inheritdoc
      */
@@ -49,6 +59,7 @@ class Brand extends \yii\db\ActiveRecord
             'logo' => 'LOGO',
             'sort' => '排序',
             'status' => '状态',
+            'imgFile' => 'LOGO',
         ];
     }
 }

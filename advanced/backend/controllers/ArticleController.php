@@ -1,22 +1,25 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: love5
+ * Date: 2017/7/18
+ * Time: 19:38
+ */
 namespace backend\controllers;
+use yii\web\Controller;
 
-use backend\models\Brand;
+use backend\models\Article;
 use yii\web\Request;
 use yii\web\UploadedFile;
-
-
-class BrandController extends \yii\web\Controller
-{
+class ArticleController extends Controller{
     public function actionIndex()
     {
-        $data = Brand::find()->where('status>-1')->all();
+        $data = Article::find()->where('status>-1')->all();
         return $this->render('index',['data'=>$data]);
     }
     public function actionAdd(){
         $request = new Request();
-        $model = new Brand();
+        $model = new Article();
         //var_dump($request->isPost);exit;
         $model->imgFile = UploadedFile::getInstance($model,'imgFile');
         if($request->isPost) {
@@ -33,7 +36,7 @@ class BrandController extends \yii\web\Controller
                 }
                 $model->save();
                 \Yii::$app->session->setFlash('success', '添加成功');
-                return $this->redirect(['brand/index']);
+                return $this->redirect(['article/index']);
             }else{
                 //验证失败 打印错误信息
                 var_dump($model->getErrors());exit;
@@ -43,28 +46,28 @@ class BrandController extends \yii\web\Controller
     }
     public function actionDel(){
         $id = $_GET['id'];
-        $model = Brand::findOne(['id'=>$id]);
+        $model = Article::findOne(['id'=>$id]);
         $model->status = '-1';
         //var_dump($id);exit;
         $model->save();
-        return $this->redirect(['brand/index']);
+        return $this->redirect(['article/index']);
     }
     public function actionRecycle(){
-        $data = Brand::find()->where('status=-1')->all();
+        $data = Article::find()->where('status=-1')->all();
         return $this->render('index',['data'=>$data]);
     }
     public function actionRestore(){
         $id = $_GET['id'];
-        $model = Brand::findOne(['id'=>$id]);
+        $model = Article::findOne(['id'=>$id]);
         $model->status = '0';
         //var_dump($id);exit;
         $model->save();
-        return $this->redirect(['brand/index']);
+        return $this->redirect(['article/index']);
     }
     public function actionEdit(){
         $request = new Request();
         $id = $_GET['id'];
-        $model = Brand::findOne(['id'=>$id]);
+        $model = Article::findOne(['id'=>$id]);
         $model->imgFile = UploadedFile::getInstance($model,'imgFile');
         if($request->isPost) {
             $model->load($request->post());
@@ -80,7 +83,7 @@ class BrandController extends \yii\web\Controller
                 }
                 $model->save();
                 \Yii::$app->session->setFlash('success', '更新成功');
-                return $this->redirect(['brand/index']);
+                return $this->redirect(['Article/index']);
             }else{
                 //验证失败 打印错误信息
                 var_dump($model->getErrors());exit;
